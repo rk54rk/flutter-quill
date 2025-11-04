@@ -19,8 +19,11 @@ mixin RawEditorStateTextInputClientMixin on EditorState
 
   set _lastKnownRemoteTextEditingValue(TextEditingValue? value) {
     __lastKnownRemoteTextEditingValue = value;
-    if (composingRange.value != value?.composing) {
-      composingRange.value = value?.composing ?? TextRange.empty;
+    final newRange = value?.composing ?? TextRange.empty;
+    if (composingRange.value != newRange) {
+      composingRange.value = newRange;
+      // Forward composing range to the controller
+      widget.controller.setComposingRange(newRange);
     }
   }
 
